@@ -1,3 +1,3 @@
 # What's Mine is Yours
 
-A music streaming service made with love.
+A music streaming service made with love. 
