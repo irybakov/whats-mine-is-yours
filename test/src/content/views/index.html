@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+
+    <h1>audio test</h1>
+    <h3>fetching audio stream...</h3>
+
+<script type="text/javascript">
+
+// INSTANCES
+window.AudioContext = window.AudioContext || window.webkitAudioContext;
+var context         = new AudioContext();
+var source          = null;
+
+
+// PROPERTIES
+var init            = false;
+var playing         = false;
+var requestResume   = false;
+var position        = 0;
+var startTime       = 0;
+var buffer          = null;
+var url             = "http://localhost:3000/stream";
+
+
+// INIT
+document.addEventListener('click', _handleDocumentClick);
+fetch();
+
+
+
+// ==================================================================================
+// INTERNAL INTERFACE ===============================================================
+
+function fetch() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url, true);
+    xhr.responseType = 'arraybuffer';
+
+    console.log('fetch')
+
+    xhr.onload = function() {
+        decode(xhr.response);
+    }
+    xhr.send();
+}
+
+
+function decode(arrayBuffer) {
+    var time = new Date();
+    console.log('decode', arrayBuffer);
+    context.decodeAudioData(arrayBuffer, function( audioBuffer ) {
+        console.log('decoded', new Date() - time);
+
+        buffer = audioBuffer;
+        init = true;
+
+        document.getElementsByTagName('h3')[0].innerHTML = "Click anywhere to start stream";
+    });
+}
+
+
+function connect() {
+    if(playing) pause();
+
+    source = context.createBufferSource();
+    source.buffer = buffer;
+    source.connect(context.destination);
+}
+
+
+function play(position) {
+    connect();
+
+    position = typeof position === 'number' ? position : this.position || 0;
+    startTime = context.currentTime - ( position || 0 );
+    source.start(context.currentTime, position);
+    playing = true;
+}
+
+
+function pause() {
+    if(source) {
+        source.stop(0);
+        source = null;
+
+        position = context.currentTime - startTime;
+        playing = false;
+    }
+}
+
+
+function toggle() {
+    if(!playing) play();
+    else pause();
+}
+
+
+// ==================================================================================
+// EVENT INTERFACE ==================================================================
+
+function _handleDocumentClick(e) {
+    if(init) toggle();
+}
+
+</script>
+
+</body>
+</html>

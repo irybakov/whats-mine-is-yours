@@ -1,0 +1,22 @@
+{
+  "name": "wmiy",
+  "version": "0.0.1",
+  "description": "",
+  "main": "./src/application",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start" : "node ./src/application.js"
+  },
+  "author": "Joel Ray",
+  "license": "BSD-2-Clause",
+  "dependencies" : {
+    "express": "3.4.8",
+  	"nedb": "~1.1.2",
+    "express3-handlebars": "~0.5.0",
+  	"socket.io" : "~1.3.5"
+  }
+}
