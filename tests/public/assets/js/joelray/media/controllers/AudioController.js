@@ -26,31 +26,12 @@ var AudioController = (function() {
 		this._buffer      = null;
 		this._url         = url;
 
-		if(this._url) this.fetch();
+		if(this._url) _fetch.call(this);
 	}
 
 
 	// =========================================================================================
 	// PUBLIC INTERFACE ------------------------------------------------------------------------
-
-	AudioController.prototype.fetch = function() {
-		var xhr = new XMLHttpRequest();
-		xhr.open('GET', this._url, true);
-		xhr.responseType = 'arraybuffer';
-		xhr.onload = function() { this.decode(xhr.response); }.bind(this);
-		xhr.send();
-	}
-
-
-	AudioController.prototype.decode = function(arrayBuffer) {
-		this._audioContext.decodeAudioData(arrayBuffer, function( audioBuffer ) {
-			this._buffer = audioBuffer;
-			this._inited = true;
-
-			if(typeof(this.onConnected) == 'function') this.onConnected();
-		}.bind(this));
-	}
-
 
 	AudioController.prototype.connect = function() {
 		if(this._playing) this.pause();
@@ -87,6 +68,28 @@ var AudioController = (function() {
 		!this._playing ? this.play() : this.pause();
 	}
 
+
+	// =========================================================================================
+	// INTERNAL INTERFACE ----------------------------------------------------------------------
+
+	function _fetch() {
+		var self = this;
+		var xhr = new XMLHttpRequest();
+		xhr.open('GET', this._url, true);
+		xhr.responseType = 'arraybuffer';
+		xhr.onload = function() { _decode.call(self, xhr.response); };
+		xhr.send();
+	}
+
+
+	function _decode(arrayBuffer) {
+		this._audioContext.decodeAudioData(arrayBuffer, function( audioBuffer ) {
+			this._buffer = audioBuffer;
+			this._inited = true;
+
+			if(typeof(this.onConnected) == 'function') this.onConnected();
+		}.bind(this));
+	}
 
 
 	return AudioController;
