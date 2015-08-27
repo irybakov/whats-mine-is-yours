@@ -25,13 +25,14 @@ var AudioController = (function() {
 
 		// PROPERTIES
 		this._inited      = false;
-		this._playing     = false;
 		this._position    = 0;
 		this._startTime   = 0;
 		this._buffer      = null;
-		this._url         = url;
+		this.playing      = false;
+		this.complete     = false;
+		this.url          = url;
 
-		if(this._url) _fetch.call(this);
+		if(this.url) _fetch.call(this);
 
 	}
 
@@ -40,7 +41,7 @@ var AudioController = (function() {
 	// PUBLIC INTERFACE ------------------------------------------------------------------------
 
 	AudioController.prototype.connect = function() {
-		if(this._playing) this.pause();
+		if(this.playing) this.pause();
 
 		this._source = this._audioContext.createBufferSource();
 		this._source.buffer = this._buffer;
@@ -56,13 +57,14 @@ var AudioController = (function() {
 		this._position = typeof position === 'number' ? position : this._position || 0;
 		this._startTime = this._audioContext.currentTime - ( this._position || 0 );
 		this._source.start(this._audioContext.currentTime, this._position);
-		this._playing = true;
+		this.playing = true;
+		this.complete = false;
 	}
 
 
 	AudioController.prototype.pause = function() {
 		if(this._source) {
-			this._playing = false;
+			this.playing = false;
 			this._position = this._audioContext.currentTime - this._startTime;
 
 			this._source.stop(0);
@@ -72,7 +74,7 @@ var AudioController = (function() {
 
 
 	AudioController.prototype.toggle = function() {
-		!this._playing ? this.play() : this.pause();
+		!this.playing ? this.play() : this.pause();
 	}
 
 
@@ -82,7 +84,7 @@ var AudioController = (function() {
 	function _fetch() {
 		var self = this;
 		var xhr = new XMLHttpRequest();
-		xhr.open('GET', this._url, true);
+		xhr.open('GET', this.url, true);
 		xhr.responseType = 'arraybuffer';
 		xhr.onload = function() { _decode.call(self, xhr.response); };
 		xhr.send();
@@ -103,10 +105,12 @@ var AudioController = (function() {
 	// EVENT INTERFACE -------------------------------------------------------------------------
 
 	function _handleSourceEnded() {
-		if(this._playing) {
-			// triggered by pause
+		if(this.playing) {
+			// confirm this isn't being triggered from pause()
+
 			this.pause();
 			this._position = 0;
+			this.complete = true;
 
 			if(typeof(this.onSourceEnded) == 'function') this.onSourceEnded();
 		}
