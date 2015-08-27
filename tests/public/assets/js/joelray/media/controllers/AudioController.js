@@ -16,7 +16,6 @@ var AudioController = function(url) {
 	// PROPERTIES
 	this.inited         = false;
 	this.playing        = false;
-	this.requestResume  = false;
 	this.position       = 0;
 	this.startTime      = 0;
 	this.buffer         = null;
