@@ -13,9 +13,17 @@
     <script type="text/javascript">
     // create audio controller
     var ac = new AudioController('http://localhost:3000/stream');
+    ac.onConnected = _handleStreamConnected;
 
-    // handle clicks - toggle audio status (play/pause)
-    document.addEventListener('click', function() { ac.handleDocumentClick() }.bind(ac));
+
+    function _handleStreamConnected() {
+        ac.play();
+
+        // handle clicks - toggle audio status (play/pause)
+        document.addEventListener('click', function() { ac.toggle() }.bind(ac));
+        document.getElementsByTagName('h3')[0].innerHTML = "Click anywhere to toggle stream";
+    }
+
     </script>
 
 </body>
