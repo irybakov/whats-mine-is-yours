@@ -9,7 +9,7 @@ Before getting starting, you'll need to make sure [Node](https://nodejs.org/) is
 
     $ npm install -g nodemon
     $ nmp install
-    $ npm start
+    $ nodemon
 
 You should get a confirmation messege something along the lines of: [nodemon] starting `node ./src/application`
 
