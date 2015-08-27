@@ -11,19 +11,46 @@
 
     <script type="text/javascript" src="assets/js/joelray/media/controllers/AudioController.js"></script>
     <script type="text/javascript">
-    // create audio controller
+    
+    // =========================================================
+    // CONSTRUCTOR ---------------------------------------------
+
     var ac = new AudioController('http://localhost:3000/stream');
     ac.onConnected = _handleStreamConnected;
+    ac.onSourceEnded = _handleStreamEnded;
 
 
-    function _handleStreamConnected() {
-        ac.play();
+    // =========================================================
+    // INTERNAL INTERFACE --------------------------------------
 
-        // handle clicks - toggle audio status (play/pause)
-        document.addEventListener('click', function() { ac.toggle() }.bind(ac));
-        document.getElementsByTagName('h3')[0].innerHTML = "Click anywhere to toggle stream";
+    function _setPlayingStatus() {
+        document.getElementsByTagName('h3')[0].innerHTML = "Click anywhere to toggle stream.";
     }
 
+
+
+    // =========================================================
+    // EVENT INTERFACE -----------------------------------------
+
+    function _handleStreamConnected() {
+        ac.play(200);
+        _setPlayingStatus();
+
+        // handle clicks - toggle audio status (play/pause)
+        document.addEventListener('click', _handleDocumentClick);
+    }
+
+
+    function _handleStreamEnded() {
+        document.getElementsByTagName('h3')[0].innerHTML = "Stream has ended. Click again to start over.";
+    }
+
+
+    function _handleDocumentClick() {
+        if(ac.complete) _setPlayingStatus();
+        ac.toggle.call(ac);
+    }
+    
     </script>
 
 </body>
