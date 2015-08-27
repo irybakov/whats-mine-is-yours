@@ -26,7 +26,6 @@ var AudioController = (function() {
 		// PROPERTIES
 		this._inited      = false;
 		this._playing     = false;
-		this._complete    = false;
 		this._position    = 0;
 		this._startTime   = 0;
 		this._buffer      = null;
@@ -57,7 +56,6 @@ var AudioController = (function() {
 		this._position = typeof position === 'number' ? position : this._position || 0;
 		this._startTime = this._audioContext.currentTime - ( this._position || 0 );
 		this._source.start(this._audioContext.currentTime, this._position);
-		this._complete = false;
 		this._playing = true;
 	}
 
@@ -108,7 +106,6 @@ var AudioController = (function() {
 		if(this._playing) {
 			// triggered by pause
 			this.pause();
-			this._complete = true;
 			this._position = 0;
 
 			if(typeof(this.onSourceEnded) == 'function') this.onSourceEnded();
