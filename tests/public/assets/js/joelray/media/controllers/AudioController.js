@@ -12,10 +12,15 @@ var AudioController = (function() {
 	// CONSTRUCTOR -----------------------------------------------------------------------------
 
 	function AudioController(url) {
+
 		// INSTANCES
 		this._audioContext = new (window.AudioContext || webkitAudioContext);
 		this._source       = null;
+
+
+		// SIGNALS
 		this.onConnected   = null;
+		this.onSourceEnded = null;
 
 
 		// PROPERTIES
@@ -27,6 +32,7 @@ var AudioController = (function() {
 		this._url         = url;
 
 		if(this._url) _fetch.call(this);
+
 	}
 
 
@@ -38,6 +44,7 @@ var AudioController = (function() {
 
 		this._source = this._audioContext.createBufferSource();
 		this._source.buffer = this._buffer;
+		this._source.onended = _handleSourceEnded.bind(this);
 		this._source.connect(this._audioContext.destination);
 	}
 
@@ -89,6 +96,14 @@ var AudioController = (function() {
 
 			if(typeof(this.onConnected) == 'function') this.onConnected();
 		}.bind(this));
+	}
+
+
+	// =========================================================================================
+	// EVENT INTERFACE -------------------------------------------------------------------------
+
+	function _handleSourceEnded() {
+		if(typeof(this.onSourceEnded) == 'function') this.onSourceEnded();
 	}
 
 
