@@ -15,7 +15,7 @@
     // =========================================================
     // CONSTRUCTOR ---------------------------------------------
 
-    var ac = new AudioController('http://localhost:3000/stream');
+    var ac = new AudioController('http://10.210.15.137:3000/stream');
     ac.onConnected = _handleStreamConnected;
     ac.onSourceEnded = _handleStreamEnded;
 
@@ -33,7 +33,7 @@
     // EVENT INTERFACE -----------------------------------------
 
     function _handleStreamConnected() {
-        ac.play(200);
+        ac.play();
         _setPlayingStatus();
 
         // handle clicks - toggle audio status (play/pause)
