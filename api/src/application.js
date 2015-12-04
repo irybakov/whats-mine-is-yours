@@ -13,7 +13,7 @@ var port            = 3000;                         // Port to launch
 
 
 // CONFIG INCLUDES
-require('./config/config')(app);                    // Handlebars configuration
+// require('./config/config')(app);                    // Handlebars configuration
 require('./config/routes')(app, express);           // URL mapping
 
 

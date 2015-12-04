@@ -7,22 +7,21 @@ module.exports = function(app, express){
     //var db            = require('./database');
 
 
-    // PROPERTIES
-    var independentSource = null; // An array of additional source files if needed. TODO: Move to config?
+    // ==============================================================================================================
+    // ROOT ---------------------------------------------------------------------------------------------------------
+    
+    app.get('/', function(req, res) {
+        res.json();
+    });
 
 
     // ==============================================================================================================
-    // HOME ---------------------------------------------------------------------------------------------------------
-    
-    app.get('/', function(req, res) {
-        res.render('index', { independentSource : independentSource });
-    });
-
+    // CONTROLS INTERFACE -------------------------------------------------------------------------------------------
 
     app.get('/stream', function(req, res) {
             var fileSystem = require('fs'),
                 path       = require('path'),
-                filePath   = path.join(__dirname, '../../media/09 And War (feat. Molly Dean).mp3'),
+                filePath   = path.join(__dirname, '../../../media/09 And War (feat. Molly Dean).mp3'),
                 // filePath   = path.join(__dirname, '../../media/02 Naysayer.mp3'),
                 stat       = fileSystem.statSync(filePath);
 
