@@ -1,17 +1,32 @@
 # What's Mine is Yours
 
+
 A music streaming service made with love. 
 
 
 ### SETUP
 
-Before getting starting, you'll need to make sure [Node](https://nodejs.org/) is installed.
+Before getting starting, you'll need to grab a few dependencies:
+ * [VirtualBox](https://www.virtualbox.org/) 
+ * [Vagrant](https://www.vagrantup.com/downloads.html) 
 
-    $ cd api
-    $ npm install -g nodemon
+Navigate to the project directory in your console and run the following:
+
+    $ vagrant up
+    $ vagrant ssh 
+    $ sudo apt-get update
+    $ sudo apt-get install nodejs-legacy
+    $ sudo apt-get install npm
+    $ cd /vagrant/api
     $ nmp install
+    $ npm install -g nodemon
     $ nodemon
 
-You should get a confirmation messege something along the lines of: [nodemon] starting `node ./src/application`
+Bam! You should now be up and running. Here's the 2 main entry points:
+ * [Web Application ('/')](http://localhost:32401)
+ * [API ('/api')](http://localhost:32401/api/)
 
-Now open up [http://localhost:32401](http://localhost:32401) in your browser.
+
+
+### Known Issues
+ * Requesting '/api' is currently throwing an error. It should redirect to '/api/'
