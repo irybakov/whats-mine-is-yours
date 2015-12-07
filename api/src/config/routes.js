@@ -11,7 +11,7 @@ module.exports = function(app, express){
     // ROOT ---------------------------------------------------------------------------------------------------------
     
     app.get('/', function(req, res) {
-        res.json();
+        res.json({});
     });
 
 
@@ -39,10 +39,11 @@ module.exports = function(app, express){
     // ==============================================================================================================
     // 404 ----------------------------------------------------------------------------------------------------------
 
-    /*app.use(function(req, res, next) {
+    app.use(function(req, res, next) {
 
         // Unregistered mapping? Send 404 response
-        res.status(404).render('404');
-    });*/
+        // res.status(404).render('404');
+        res.json(error:'error');
+    });
 
 };
