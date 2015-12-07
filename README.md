@@ -29,4 +29,4 @@ Bam! You should now be up and running. Here's the 2 main entry points:
 
 
 ### Known Issues
- * Requesting '/api' is currently throwing an error. It should redirect to '/api/'
+ * Requesting '/api' is currently throwing an error. It should redirect to '/api/' - See [Vaprobash Helper - [ngxcb](https://github.com/joelray/Vaprobash/blob/master/helpers/ngxcb.sh#L140)]
