@@ -26,11 +26,12 @@ module.exports = function(app, express){
                 stat       = fileSystem.statSync(filePath);
 
             res.writeHead(200, {
-                'Content-Type': 'audio/mpeg',
+                'Content-Type': 'audio/mp4',
                 'Content-Length': stat.size
             });
 
             var readStream = fileSystem.createReadStream(filePath);
+            readStream.on('end', _handleEndStream);
             readStream.pipe(res);
     });
 
@@ -43,7 +44,14 @@ module.exports = function(app, express){
 
         // Unregistered mapping? Send 404 response
         // res.status(404).render('404');
-        res.json(error:'error');
+        res.json({error:'error'});
     });
+
+
+
+
+    function _handleEndStream(e) {
+        console.log('_handleEndStream');
+    }
 
 };

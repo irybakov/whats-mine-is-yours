@@ -15,7 +15,7 @@
     // =========================================================
     // CONSTRUCTOR ---------------------------------------------
 
-    var ac = new AudioController('http://10.210.15.137:3000/stream');
+    var ac = new AudioController('/stream');
     ac.onConnected = _handleStreamConnected;
     ac.onSourceEnded = _handleStreamEnded;
 
