@@ -27,6 +27,7 @@ var AudioController = (function() {
 		this._inited      = false;
 		this._position    = 0;
 		this._startTime   = 0;
+		this._duration    = 0;
 		this._buffer      = null;
 		this.playing      = false;
 		this.complete     = false;
@@ -93,8 +94,9 @@ var AudioController = (function() {
 
 	function _decode(arrayBuffer) {
 		this._audioContext.decodeAudioData(arrayBuffer, function( audioBuffer ) {
-			this._buffer = audioBuffer;
-			this._inited = true;
+			this._buffer   = audioBuffer;
+			this._duration = audioBuffer.duration;
+			this._inited   = true;
 
 			if(typeof(this.onConnected) == 'function') this.onConnected();
 		}.bind(this));
