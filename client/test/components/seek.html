@@ -32,8 +32,40 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../assets/js/joelray/media/controllers/AudioController.js"></script>
     <script type="text/javascript">
-        // nothin'
+        
+        // =========================================================
+        // CONSTRUCTOR ---------------------------------------------
+
+        var ac = new AudioController('/api/stream');
+        ac.onConnected = _handleStreamConnected;
+        ac.onSourceEnded = _handleStreamEnded;
+
+
+        // =========================================================
+        // INTERNAL INTERFACE --------------------------------------
+
+        function _setPlayingStatus() {
+            // nothin
+        }
+
+
+
+        // =========================================================
+        // EVENT INTERFACE -----------------------------------------
+
+        function _handleStreamConnected() {
+            return;
+            
+            ac.play();
+            _setPlayingStatus();
+        }
+
+
+        function _handleStreamEnded() {
+            document.getElementsByTagName('h3')[0].innerHTML = "Stream has ended. Click again to start over.";
+        }
     </script>
 
 </body>
