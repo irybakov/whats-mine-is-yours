@@ -17,6 +17,7 @@ Navigate to the project directory in your console and run the following:
     $ sudo apt-get update
     $ sudo apt-get install nodejs-legacy
     $ sudo apt-get install npm
+    $ sudo cp /vagrant/docs/server/nginx-config/vagrant.conf /etc/nginx/sites-available/vagrant
     $ cd /vagrant/api
     $ nmp install
     $ npm install -g nodemon
