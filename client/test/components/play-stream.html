@@ -9,6 +9,7 @@
     <h3>fetching audio stream...</h3>
 
 
+    <script type="text/javascript" src="../../assets/js/joelray/media/audio/AudioConnectionQueueItem.js"></script>
     <script type="text/javascript" src="../../assets/js/joelray/media/controllers/AudioController.js"></script>
     <script type="text/javascript">
     
@@ -16,8 +17,14 @@
     // CONSTRUCTOR ---------------------------------------------
 
     var ac = new AudioController('/api/stream');
-    ac.onConnected = _handleStreamConnected;
-    ac.onSourceEnded = _handleStreamEnded;
+    //ac.onConnected = _handleStreamConnected;
+    //ac.onSourceEnded = _handleStreamEnded;
+    ac.play();
+
+    _setPlayingStatus();
+
+    // handle clicks - toggle audio status (play/pause)
+    document.addEventListener('click', _handleDocumentClick);
 
 
     // =========================================================
@@ -33,11 +40,7 @@
     // EVENT INTERFACE -----------------------------------------
 
     function _handleStreamConnected() {
-        ac.play();
-        _setPlayingStatus();
-
-        // handle clicks - toggle audio status (play/pause)
-        document.addEventListener('click', _handleDocumentClick);
+        
     }
 
 

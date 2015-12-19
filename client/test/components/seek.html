@@ -14,17 +14,17 @@
 
     <div class="player">
 
-        <button type="button" id="seek-0" class="btn">
+        <button type="button" id="seek-0" class="btn seek-btn" data-seek="0">
             <span>Seek to 0</span>
         </button>
 
 
-        <button type="button" id="seek-30" class="btn">
+        <button type="button" id="seek-30" class="btn seek-btn" data-seek="30">
             <span>Seek to 30</span>
         </button>
 
 
-        <button type="button" id="seek-120" class="btn">
+        <button type="button" id="seek-120" class="btn seek-btn" data-seek="150">
             <span>Seek to 120</span>
         </button>
     </div>
@@ -32,15 +32,20 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../assets/js/joelray/media/audio/AudioConnectionQueueItem.js"></script>
     <script type="text/javascript" src="../../assets/js/joelray/media/controllers/AudioController.js"></script>
     <script type="text/javascript">
         
         // =========================================================
         // CONSTRUCTOR ---------------------------------------------
 
-        var ac = new AudioController('/api/stream');
-        ac.onConnected = _handleStreamConnected;
-        ac.onSourceEnded = _handleStreamEnded;
+        var ac = new AudioController('/api/stream/');
+        // ac.onConnected = _handleStreamConnected;
+        // ac.onSourceEnded = _handleStreamEnded;
+
+
+        $('.seek-btn').on('click', _handleSeekButtonClicked);
+        $(document).on('keyup', _handleKeyUp);
 
 
         // =========================================================
@@ -58,13 +63,24 @@
         function _handleStreamConnected() {
             return;
             
-            ac.play();
+            ac.play(150);
             _setPlayingStatus();
         }
 
 
         function _handleStreamEnded() {
             document.getElementsByTagName('h3')[0].innerHTML = "Stream has ended. Click again to start over.";
+        }
+
+
+        function _handleSeekButtonClicked(e) {
+            var seekTo = e.currentTarget.getAttribute('data-seek');
+            ac.play(seekTo);
+        }
+
+        
+        function _handleKeyUp(e) {
+            if(e.keyCode == 32) ac.toggle();
         }
     </script>
 

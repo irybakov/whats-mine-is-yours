@@ -16,6 +16,7 @@ var AudioController = (function() {
 		// INSTANCES
 		this._audioContext = new (window.AudioContext || webkitAudioContext);
 		this._source       = null;
+		this._connectionQueue = [];
 
 
 		// SIGNALS
@@ -32,8 +33,6 @@ var AudioController = (function() {
 		this.playing      = false;
 		this.complete     = false;
 		this.url          = url;
-
-		if(this.url) _fetch.call(this);
 
 	}
 
@@ -53,8 +52,15 @@ var AudioController = (function() {
 
 
 	AudioController.prototype.play = function(position) {
-		this.connect();
 
+		// TODO: Refactor this. This shouldn't require a queue; Should be of single instance.
+		if(!this._inited || this.playing) {
+			this.pause();
+			this._connectionQueue.push( new AudioConnectionQueueItem( position ));
+			return _fetch.call(this);
+		}
+
+		this.connect();
 		this._position = typeof position === 'number' ? position : this._position || 0;
 		this._startTime = this._audioContext.currentTime - ( this._position || 0 );
 		this._source.start(this._audioContext.currentTime, this._position);
@@ -66,6 +72,7 @@ var AudioController = (function() {
 	AudioController.prototype.pause = function() {
 		if(this._source) {
 			this.playing = false;
+			this._inited = false;
 			this._position = this._audioContext.currentTime - this._startTime;
 
 			this._source.stop(0);
@@ -98,8 +105,19 @@ var AudioController = (function() {
 			this._duration = audioBuffer.duration;
 			this._inited   = true;
 
-			if(typeof(this.onConnected) == 'function') this.onConnected();
+			_releaseConnectionQueueItems.call(this);
 		}.bind(this));
+	}
+
+
+	function _releaseConnectionQueueItems() {
+		var queueItem, i = this._connectionQueue.length;
+		while(this._connectionQueue.length) {
+			queueItem = this._connectionQueue[i-1];
+
+			this._connectionQueue.pop();
+			this.play(Number(queueItem.position))
+		}
 	}
 
 
@@ -108,8 +126,6 @@ var AudioController = (function() {
 
 	function _handleSourceEnded() {
 		if(this.playing) {
-			// confirm this isn't being triggered from pause()
-
 			this.pause();
 			this._position = 0;
 			this.complete = true;
