@@ -29,4 +29,10 @@ Bam! You should now be up and running. Here's the 2 main entry points:
 
 
 
+### TODOs
+ * Add current time ticker
+ * Add scrubber/track position bar
+
+
 ### Known Issues
+ * Calling AudioController.pause() loses track position
