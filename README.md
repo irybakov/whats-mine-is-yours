@@ -36,3 +36,4 @@ Bam! You should now be up and running. Here's the 2 main entry points:
 
 ### Known Issues
  * Calling AudioController.pause() loses track position
+ * Seeking currently reloads track source
