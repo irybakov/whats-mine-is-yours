@@ -17,6 +17,7 @@ Navigate to the project directory in your console and run the following:
     $ sudo apt-get update
     $ sudo apt-get install nodejs-legacy
     $ sudo apt-get install npm
+    $ sudo cp /vagrant/docs/server/nginx-config/vagrant.conf /etc/nginx/sites-available/vagrant
     $ cd /vagrant/api
     $ nmp install
     $ npm install -g nodemon
@@ -28,5 +29,11 @@ Bam! You should now be up and running. Here's the 2 main entry points:
 
 
 
+### TODOs
+ * Add current time ticker
+ * Add scrubber/track position bar
+
+
 ### Known Issues
- * Requesting '/api' is currently throwing an error. It should redirect to '/api/' - See  [Vaprobash Helper: ngxcb](https://github.com/joelray/Vaprobash/blob/master/helpers/ngxcb.sh#L140)
+ * Calling AudioController.pause() loses track position
+ * Seeking currently reloads track source
